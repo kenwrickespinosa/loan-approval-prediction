@@ -39,4 +39,4 @@ df['Education'] = df['Education'].astype('int')
 df['Self_Employed'] = df['Self_Employed'].fillna(df['Self_Employed'].mode()[0])
 df['Self_Employed'] = df['Self_Employed'].map({'Yes': 1, 'No': 0})
 
-print(df.info())
+# print(df.info())
