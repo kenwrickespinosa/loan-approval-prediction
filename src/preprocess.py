@@ -43,6 +43,15 @@ df['Self_Employed'] = df['Self_Employed'].map({'Yes': 1, 'No': 0})
 # print(df['ApplicantIncome'].head(10))
 # print(df['ApplicantIncome'].isna().sum())
 
-# 
+# CoapplicantIncome column
+# print(df['CoapplicantIncome'].head(10))
+# print(df['CoapplicantIncome'].isna().sum())
+
+# LoanAmount column
+# print(df['LoanAmount'].head(10))
+# print(df['LoanAmount'].isna().sum())
+
+# Loan_Amount_Term
+df['Loan_Amount_Term'] = df['Loan_Amount_Term'].fillna(df['Loan_Amount_Term'].mode()[0])
 
 print(df.info())
