@@ -29,6 +29,14 @@ df['Dependents'] = df['Dependents'].replace('3+', 3)
 df['Dependents'] = df['Dependents'].astype('float64')
 df['Dependents'] = df['Dependents'].map(validate_dependents)
 df['Dependents'] = df['Dependents'].fillna(df['Dependents'].mode()[0])
-df['Dependents'] = df['Dependents'].astype('int64')
+df['Dependents'] = df['Dependents'].astype('int')
 
-# print(df.info())
+# Education column
+df['Education'] = df['Education'].map({'Graduate': 1, 'Not Graduate': 0})
+df['Education'] = df['Education'].astype('int')
+
+# Self_Employed column
+df['Self_Employed'] = df['Self_Employed'].fillna(df['Self_Employed'].mode()[0])
+df['Self_Employed'] = df['Self_Employed'].map({'Yes': 1, 'No': 0})
+
+print(df.info())
