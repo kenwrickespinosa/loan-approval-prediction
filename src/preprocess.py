@@ -51,7 +51,16 @@ df['Self_Employed'] = df['Self_Employed'].map({'Yes': 1, 'No': 0})
 # print(df['LoanAmount'].head(10))
 # print(df['LoanAmount'].isna().sum())
 
-# Loan_Amount_Term
+# Loan_Amount_Term column
 df['Loan_Amount_Term'] = df['Loan_Amount_Term'].fillna(df['Loan_Amount_Term'].mode()[0])
+
+# Credit_History column
+df['Credit_History'] = df['Credit_History'].fillna(df['Credit_History'].mode()[0])
+
+# Property_Area column
+df['Property_Area'] = df['Property_Area'].map({'Rural': 0, 'Urban': 1, 'Semiurban': 2})
+
+# Loan_Status column
+df['Loan_Status'] = df['Loan_Status'].map({'Y': 1, 'N': 0})
 
 print(df.info())
