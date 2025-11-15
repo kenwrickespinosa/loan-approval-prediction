@@ -1,4 +1,6 @@
 import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
 
 # Load data
 df = pd.read_csv("data/loan_data.csv")
@@ -63,4 +65,41 @@ df['Property_Area'] = df['Property_Area'].map({'Rural': 0, 'Urban': 1, 'Semiurba
 # Loan_Status column
 df['Loan_Status'] = df['Loan_Status'].map({'Y': 1, 'N': 0})
 
-print(df.info())
+# Check for duplicates
+# duplicates = df[df.duplicated()]
+# print(duplicates)
+# print(df.duplicated().sum())
+
+# Identify Outliers
+# ApplicantIncome_q1 = df['ApplicantIncome'].quantile(.25)
+# ApplicantIncome_q3 = df['ApplicantIncome'].quantile(.75)
+# ApplicantIncome_iqr = ApplicantIncome_q3 - ApplicantIncome_q1
+# ApplicantIncome_lower = ApplicantIncome_q1 - (1.5 * ApplicantIncome_iqr)
+# ApplicantIncome_upper = ApplicantIncome_q3 + (1.5 * ApplicantIncome_iqr)
+
+# plt.boxplot(df['ApplicantIncome'])
+# plt.title("Applicant Income")
+# plt.show()
+
+# CoapplicantIncome_q1 = df['CoapplicantIncome'].quantile(.25)
+# CoapplicantIncome_q3 = df['CoapplicantIncome'].quantile(.75)
+# CoapplicantIncome_iqr = CoapplicantIncome_q3 - CoapplicantIncome_q1
+# CoapplicantIncome_lower = CoapplicantIncome_q1 - (1.5 * CoapplicantIncome_iqr)
+# CoapplicantIncome_upper = CoapplicantIncome_q3 + (1.5 * CoapplicantIncome_iqr)
+
+# LoanAmount_q1 = df['LoanAmount'].quantile(.25)
+# LoanAmount_q3 = df['LoanAmount'].quantile(.75)
+# LoanAmount_iqr = LoanAmount_q3 - LoanAmount_q1
+# LoanAmount_lower = LoanAmount_q1 - (1.5 * LoanAmount_iqr)
+# LoanAmount_upper = LoanAmount_q3 + (1.5 * LoanAmount_iqr)
+
+
+# Apply log transformation to ApplicationIncome
+# fig, ax = plt.subplots()
+# ax.hist(df['ApplicantIncome'], edgecolor="white")
+# plt.show()
+
+df['ApplicantIncome_log'] = np.log(df['ApplicantIncome'] + 1)
+fig, ax = plt.subplots()
+ax.hist(df['ApplicantIncome_log'], edgecolor="white")
+plt.show()
