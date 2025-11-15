@@ -96,6 +96,10 @@ print(f'LoanAmount outlier\nlower: {lower} and upper: {upper}')
 print('lower:', df['LoanAmount'].loc[df['LoanAmount'] < lower])
 print('upper:', df['LoanAmount'].loc[df['LoanAmount'] > upper])
 
-plt.boxplot(df['LoanAmount'], vert=False)
+df['LoanAmount_cap'] = cap_outlier(df, 'LoanAmount')
+LoanAmount_scaler = StandardScaler()
+df['LoanAmount_scale'] = LoanAmount_scaler.fit_transform(df[['LoanAmount_cap']])
+
+plt.boxplot(df['LoanAmount_scale'], vert=False)
 plt.title("LoanAmount")
 plt.show()
