@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+from sklearn.preprocessing import StandardScaler
+from utils.outlier import define_outlier, cap_outlier
 
 # Load data
 df = pd.read_csv("data/loan_data.csv")
@@ -48,6 +50,7 @@ df['Self_Employed'] = df['Self_Employed'].map({'Yes': 1, 'No': 0})
 # CoapplicantIncome column
 # print(df['CoapplicantIncome'].head(10))
 # print(df['CoapplicantIncome'].isna().sum())
+df['CoapplicantIncome'] = df['CoapplicantIncome'].astype('float')
 
 # LoanAmount column
 # print(df['LoanAmount'].head(10))
@@ -70,36 +73,29 @@ df['Loan_Status'] = df['Loan_Status'].map({'Y': 1, 'N': 0})
 # print(duplicates)
 # print(df.duplicated().sum())
 
-# Identify Outliers
-# ApplicantIncome_q1 = df['ApplicantIncome'].quantile(.25)
-# ApplicantIncome_q3 = df['ApplicantIncome'].quantile(.75)
-# ApplicantIncome_iqr = ApplicantIncome_q3 - ApplicantIncome_q1
-# ApplicantIncome_lower = ApplicantIncome_q1 - (1.5 * ApplicantIncome_iqr)
-# ApplicantIncome_upper = ApplicantIncome_q3 + (1.5 * ApplicantIncome_iqr)
-
-# plt.boxplot(df['ApplicantIncome'])
-# plt.title("Applicant Income")
-# plt.show()
-
-# CoapplicantIncome_q1 = df['CoapplicantIncome'].quantile(.25)
-# CoapplicantIncome_q3 = df['CoapplicantIncome'].quantile(.75)
-# CoapplicantIncome_iqr = CoapplicantIncome_q3 - CoapplicantIncome_q1
-# CoapplicantIncome_lower = CoapplicantIncome_q1 - (1.5 * CoapplicantIncome_iqr)
-# CoapplicantIncome_upper = CoapplicantIncome_q3 + (1.5 * CoapplicantIncome_iqr)
-
-# LoanAmount_q1 = df['LoanAmount'].quantile(.25)
-# LoanAmount_q3 = df['LoanAmount'].quantile(.75)
-# LoanAmount_iqr = LoanAmount_q3 - LoanAmount_q1
-# LoanAmount_lower = LoanAmount_q1 - (1.5 * LoanAmount_iqr)
-# LoanAmount_upper = LoanAmount_q3 + (1.5 * LoanAmount_iqr)
-
-
 # Apply log transformation to ApplicationIncome
-# fig, ax = plt.subplots()
-# ax.hist(df['ApplicantIncome'], edgecolor="white")
-# plt.show()
-
 df['ApplicantIncome_log'] = np.log(df['ApplicantIncome'] + 1)
-fig, ax = plt.subplots()
-ax.hist(df['ApplicantIncome_log'], edgecolor="white")
+
+# Perform scaling to ApplicantIncome_log
+ApplicantIncome_scaler = StandardScaler()
+df['ApplicantIncome_scale'] = ApplicantIncome_scaler.fit_transform(df[['ApplicantIncome_log']])
+
+# CoapplicantIncome
+df['CoapplicantIncome'] = df['CoapplicantIncome'].round(2)
+# lower, upper = define_outlier(df, 'CoapplicantIncome')
+# print(f'CoapplicantIncome outlier\nlower: {lower} and upper: {upper}')
+df['CoapplicantIncome_cap'] = cap_outlier(df, 'CoapplicantIncome')
+
+df['CoapplicantIncome_cap_log'] = np.log(df['CoapplicantIncome_cap'] + 1)
+CoapplicantIncome_scaler = StandardScaler()
+df['CoapplicantIncome_cap_scale'] = CoapplicantIncome_scaler.fit_transform(df[['CoapplicantIncome_cap_log']])
+
+# LoanAmount
+lower, upper = define_outlier(df, 'LoanAmount')
+print(f'LoanAmount outlier\nlower: {lower} and upper: {upper}')
+print('lower:', df['LoanAmount'].loc[df['LoanAmount'] < lower])
+print('upper:', df['LoanAmount'].loc[df['LoanAmount'] > upper])
+
+plt.boxplot(df['LoanAmount'], vert=False)
+plt.title("LoanAmount")
 plt.show()
