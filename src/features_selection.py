@@ -1,4 +1,4 @@
-class FeatureSelection:
+class FeaturesSelection:
     def __init__(self, df):
         self.df = df.copy()
     
