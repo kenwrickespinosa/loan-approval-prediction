@@ -7,6 +7,7 @@ from sklearn.model_selection import train_test_split
 from preprocess import preprocess_data
 from features_selection import FeaturesSelection
 from imblearn.over_sampling import SMOTE
+import joblib
 
 models = {
     "DecisionTree": DecisionTreeClassifier(max_depth=5, random_state=42),
@@ -22,14 +23,14 @@ models = {
     )
 }
 
-df = preprocess_data()
+df = preprocess_data("data/loan_data.csv")
 
 fs = FeaturesSelection(df)
 X, y = fs.get_original_features()
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-smt = SMOTE()
+smt = SMOTE(random_state=42)
 X_train_smt, y_train_smt = smt.fit_resample(X_train, y_train)
 
 # Debugging: check class distribution
