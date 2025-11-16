@@ -91,7 +91,7 @@ def preprocess_data(file_path="data/loan_data.csv"):
     LoanAmount_scaler = StandardScaler()
     df['LoanAmount_scale'] = LoanAmount_scaler.fit_transform(df[['LoanAmount_cap']])
 
-    # Loan_Amount_Term
+    # Loan_Amount_Term scaling
     # dummies = pd.get_dummies(df['Loan_Amount_Term'], prefix='LoanAmountTerm', drop_first=True)
     # df = pd.concat([df, dummies], axis=1)
     LoanAmountTerm_scaler = StandardScaler()
