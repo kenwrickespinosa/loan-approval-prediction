@@ -1,8 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
+import UserForm from './UserForm'
 
 function index() {
+  const [isUserForm, setIsUserForm] = useState(false);
+
   return (
-    <div>index</div>
+    <div>
+      <Button type="button" onClick={handleUserFormOpen}>Create User</Button>
+    </div>
   )
 }
 
