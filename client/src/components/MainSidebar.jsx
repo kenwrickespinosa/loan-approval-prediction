@@ -17,6 +17,14 @@ const items = [
     url: "/dashboard",
   },
   {
+    title: "User",
+    url: "/users"
+  },
+  {
+    title: "Evaluate",
+    url: "/evaluate"
+  },
+  {
     title: "Login",
     url: "/",
   },
