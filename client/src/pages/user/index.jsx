@@ -1,14 +1,12 @@
-import React, { useState } from 'react'
-import UserForm from './UserForm'
+import React from "react";
+import CreateUserModal from "./CreateUserModal";
 
 function index() {
-  const [isUserForm, setIsUserForm] = useState(false);
-
   return (
     <div>
-      <Button type="button" onClick={handleUserFormOpen}>Create User</Button>
+      <CreateUserModal />
     </div>
-  )
+  );
 }
 
-export default index
+export default index;

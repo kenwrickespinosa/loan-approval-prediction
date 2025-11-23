@@ -26,7 +26,9 @@ function UserForm() {
             <Input type="number" />
           </span>
         </div>
-        <Button type="submit" className="cursor-pointer">Create User</Button>
+        <Button type="submit" className="cursor-pointer">
+          Create User
+        </Button>
       </form>
     </div>
   );
