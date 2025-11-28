@@ -7,8 +7,11 @@ import { CiUser } from "react-icons/ci";
 
 function UserCard({ client }) {
   const sliceAddress = (client) => {
-    const newAddress = client.address.slice(0, 13)+"...";
-    return newAddress;
+    if (client.address.length > 13) {
+      const newAddress = client.address.slice(0, 13) + "...";
+      return newAddress;
+    }
+    return client.address;
   };
 
   return (
@@ -39,7 +42,9 @@ function UserCard({ client }) {
             <CiLocationOn className="text-blue-400 font-bold size-6" />
             <div className="flex flex-col">
               <span className="text-neutral-400 text-xs">ADDRESS</span>
-              <span className="text-sm font-medium">{sliceAddress(client)}</span>
+              <span className="text-sm font-medium">
+                {sliceAddress(client)}
+              </span>
             </div>
           </div>
           <div className="flex items-center gap-2">

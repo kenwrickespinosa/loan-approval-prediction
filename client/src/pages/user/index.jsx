@@ -7,7 +7,7 @@ function index() {
   const [clients, setClients] = useState([]);
 
   useEffect(() => {
-    const fetchClients = async() => {
+    const fetchClients = async () => {
       try {
         const token = localStorage.getItem("token");
 
@@ -25,17 +25,15 @@ function index() {
         if (!response.ok) {
           throw new Error(data.message || "Failed to fetch clients");
         }
-        
-        setClients(data)
-        console.log("Clients fetched successfully");
-        console.log("data:", data);
+
+        setClients(data);
       } catch (error) {
         console.log(error);
       }
-    }
+    };
 
     fetchClients();
-  }, [])
+  }, []);
 
   return (
     <div>
