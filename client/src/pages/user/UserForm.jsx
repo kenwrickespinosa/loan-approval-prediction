@@ -123,7 +123,7 @@ function UserForm() {
             onClick={() => setGender("Male")}
             className={`${
               gender === "Male" ? "bg-blue-200" : "bg-white"
-            } border text-black`}
+            } border text-black md:hover:bg-blue-200`}
           >
             <IoMdMale />
             Male
@@ -133,7 +133,7 @@ function UserForm() {
             onClick={() => setGender("Female")}
             className={`${
               gender === "Female" ? "bg-red-200" : "bg-white"
-            } border text-black`}
+            } border text-black md:hover:bg-red-200`}
           >
             <IoMdFemale />
             Female
