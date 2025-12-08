@@ -1,8 +1,13 @@
 import React from 'react'
+import PredictionForm from './PredictionForm'
 
 function index() {
   return (
-    <div>evaluate</div>
+    <div className="w-[360px]">
+      <div className="px-6">
+        <PredictionForm />
+      </div>
+    </div>
   )
 }
 
