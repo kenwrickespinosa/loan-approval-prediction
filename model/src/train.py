@@ -8,6 +8,7 @@ from preprocess import preprocess_data
 from features_selection import FeaturesSelection
 from imblearn.over_sampling import SMOTE
 import joblib
+import os
 
 models = {
     "DecisionTree": DecisionTreeClassifier(max_depth=5, random_state=42),
@@ -51,3 +52,11 @@ for name, model in models.items():
     f1 = f1_score(y_test, y_pred)
     print(f"{name}: Accuracy={acc:.4f}, F1={f1:.4f}")
     print(confusion_matrix(y_test, y_pred))
+
+    # Save model
+    filename = f"saved_models/{name}.joblib"
+    if not os.path.exists(filename):
+        joblib.dump(model, filename)
+        print(f"Saved {name} model to {filename}")
+    else:
+        print(f"Model {name} already exists. Skipping save.")
