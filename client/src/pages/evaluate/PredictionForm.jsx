@@ -12,7 +12,7 @@ import React, { useEffect, useState } from "react";
 import ClientSearchbar from "./ClientSearchbar";
 import { Button } from "@/components/ui/button";
 
-function PredictionForm() {
+function PredictionForm({ setPredResult }) {
   const [gender, setGender] = useState("");
   const [married, setMarried] = useState("");
   const [dependents, setDependents] = useState("");
@@ -57,12 +57,55 @@ function PredictionForm() {
     fetchClients();
   }, []);
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const token = localStorage.getItem("token");
+
+    const payload = {
+      gender,
+      married,
+      dependents,
+      education,
+      self_employed: selfEmployed,
+      applicant_income: applicantIncome,
+      coapplicant_income: coapplicantIncome,
+      loan_amount: loanAmount,
+      loan_amount_term: loanAmountTerm,
+      credit_history: creditHistory,
+      property_area: propertyArea,
+    };
+
+    try {
+      const res = await fetch("http://127.0.0.1:8000/api/predict-loan", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error);
+      }
+
+      console.log("Backend return:", data);
+      setPredResult(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
-    <div className="flex flex-col gap-6 border rounded-md p-4">
+    <div className="flex flex-col gap-6 border rounded-md p-4 md:w-[340px]">
       <span className="flex justify-center text-neutral-500 font-bold">
         Evaluation Form for Loan Prediction
       </span>
-      <form className="flex flex-col gap-4">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div>
           <ClientSearchbar
             clientsList={clientsList}
@@ -191,7 +234,7 @@ function PredictionForm() {
             className="w-[135px]"
           />
         </div>
-        <Button>Evaluate</Button>
+        <Button type="submit">Evaluate</Button>
       </form>
     </div>
   );
