@@ -12,7 +12,7 @@ import React, { useEffect, useState } from "react";
 import ClientSearchbar from "./ClientSearchbar";
 import { Button } from "@/components/ui/button";
 
-function PredictionForm({ setPredResult }) {
+function PredictionForm({ setPredResult, setSelectedClient }) {
   const [gender, setGender] = useState("");
   const [married, setMarried] = useState("");
   const [dependents, setDependents] = useState("");
@@ -26,7 +26,26 @@ function PredictionForm({ setPredResult }) {
   const [propertyArea, setPropertyArea] = useState("");
 
   const [clientsList, setClientsList] = useState([]);
-  const [selectedClient, setSelectedClient] = useState("");
+
+  const isButtonDisabled = () => {
+    if (
+      !gender ||
+      !married ||
+      !education ||
+      !dependents ||
+      !applicantIncome ||
+      !selfEmployed ||
+      !loanAmount ||
+      !coapplicantIncome ||
+      !creditHistory ||
+      !loanAmountTerm ||
+      !clientsList ||
+      !propertyArea
+    ) {
+      return true;
+    }
+    return false;
+  };
 
   useEffect(() => {
     const fetchClients = async () => {
@@ -84,7 +103,7 @@ function PredictionForm({ setPredResult }) {
           Accept: "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
       });
 
       const data = await res.json();
@@ -94,7 +113,8 @@ function PredictionForm({ setPredResult }) {
       }
 
       console.log("Backend return:", data);
-      setPredResult(data);
+      console.log("Backend payload:", payload);
+      setPredResult({ ...data, payload }); // Passing payload
     } catch (err) {
       console.error(err);
     }
@@ -234,7 +254,10 @@ function PredictionForm({ setPredResult }) {
             className="w-[135px]"
           />
         </div>
-        <Button type="submit">Evaluate</Button>
+        <Button type="submit" disabled={isButtonDisabled()} className="cursor-pointer">
+          {/* Evaluate */}
+          {!isButtonDisabled() ? "Evaluate" : "Fill in required inputs"}
+        </Button>
       </form>
     </div>
   );

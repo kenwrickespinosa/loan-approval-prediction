@@ -45,7 +45,7 @@ function ClientSearchbar({ clientsList, onSelect }) {
               <CommandItem
                 key={client.id}
                 onSelect={() => {
-                  onSelect(client.id);
+                  onSelect(client);
                   setQuery(
                     `${client.firstname} ${client.lastname}`
                   );
