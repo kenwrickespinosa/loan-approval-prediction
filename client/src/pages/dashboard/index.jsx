@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import ClientCount from "./ClientCount";
 import FilterOptionsModal from "./FilterOptionsModal";
 import { useSearchParams } from "react-router-dom";
+import TotalAmountReq from "./TotalAmountReq";
 
 function index() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -27,9 +28,9 @@ function index() {
         <div>
           <ClientCount filters={filters} />
         </div>
-        {/* <div>
-          <ClientCount />
-        </div> */}
+        <div>
+          <TotalAmountReq filters={filters} />
+        </div>
       </div>
     </div>
   );

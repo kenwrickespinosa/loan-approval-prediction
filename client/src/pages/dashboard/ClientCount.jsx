@@ -37,8 +37,8 @@ function ClientCount({ filters }) {
 
   return (
     <div>
-      <Card className="bg-blue-200 border-blue-200">
-        <CardContent className="pb-0 p-5 flex items-center gap-10">
+      <Card className="border-l-8 border-l-blue-400 rounded-sm">
+        <CardContent className="pb-0 p-5 flex items-center gap-10 bg-neutral-50">
           <div>
             <FaRegUser className="size-8" />
           </div>
