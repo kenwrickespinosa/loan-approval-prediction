@@ -2,14 +2,16 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import React, { useEffect, useState } from "react";
 import { FaRegUser } from "react-icons/fa";
 
-function ClientCount() {
+function ClientCount({ filters }) {
   const [count, setCount] = useState("");
 
   useEffect(() => {
     const getCount = async () => {
+      const params = new URLSearchParams(filters).toString();
       const token = localStorage.getItem("token");
+
       try {
-        const res = await fetch("http://127.0.0.1:8000/api/clients/count", {
+        const res = await fetch(`http://127.0.0.1:8000/api/clients/count?${params}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -31,7 +33,7 @@ function ClientCount() {
     };
 
     getCount();
-  }, []);
+  }, [filters]);
 
   return (
     <div>

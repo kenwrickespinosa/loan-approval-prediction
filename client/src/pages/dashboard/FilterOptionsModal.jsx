@@ -1,0 +1,53 @@
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import React, { useEffect, useState } from "react";
+import FilterOptions from "./FilterOptions";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+
+function FilterOptionsModal({ filters, setFilters }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [tempFilters, setTempFilters] = useState(filters);
+
+  useEffect(() => {
+    setTempFilters(filters);
+  }, [filters]);
+
+  const handleApply = () => {
+    setFilters(tempFilters);
+    setIsOpen(false);
+  };
+
+  return (
+    <div>
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogTrigger asChild>
+          <Button className="cursor-pointer">Filter</Button>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Apply Filter</DialogTitle>
+            <VisuallyHidden>
+              <DialogDescription />
+            </VisuallyHidden>
+          </DialogHeader>
+          <div>
+            <FilterOptions filters={tempFilters} onChange={setTempFilters} />
+          </div>
+          <DialogFooter>
+            <Button onClick={handleApply}>Apply</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}
+
+export default FilterOptionsModal;
