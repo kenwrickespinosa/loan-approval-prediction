@@ -11,6 +11,7 @@ import {
 import React, { useEffect, useState } from "react";
 import FilterOptions from "./FilterOptions";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import { IoFilterSharp } from "react-icons/io5";
 
 function FilterOptionsModal({ filters, setFilters }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,10 +27,12 @@ function FilterOptionsModal({ filters, setFilters }) {
   };
 
   return (
-    <div>
+    <div className="md:w-[1250px] text-right pr-4">
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>
-          <Button className="cursor-pointer">Filter</Button>
+          <Button className="cursor-pointer bg-white border-2 hover:bg-blue-200 hover:border-blue-200">
+            <IoFilterSharp className="text-black font-bold size-6" />
+          </Button>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>

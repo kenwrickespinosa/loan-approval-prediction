@@ -2,38 +2,38 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import React, { useEffect, useState } from "react";
 import { FaRegUser } from "react-icons/fa";
 
-function ClientCount({ filters }) {
-  const [count, setCount] = useState("");
+function ClientCount({ clientCount }) {
+  // const [count, setCount] = useState("");
 
-  useEffect(() => {
-    const getCount = async () => {
-      const params = new URLSearchParams(filters).toString();
-      const token = localStorage.getItem("token");
+  // useEffect(() => {
+  //   const getCount = async () => {
+  //     const params = new URLSearchParams(filters).toString();
+  //     const token = localStorage.getItem("token");
 
-      try {
-        const res = await fetch(`http://127.0.0.1:8000/api/clients/count?${params}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+  //     try {
+  //       const res = await fetch(`http://127.0.0.1:8000/api/clients/count?${params}`, {
+  //         method: "GET",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Accept: "application/json",
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       });
 
-        const data = await res.json();
+  //       const data = await res.json();
 
-        if (!res.ok) {
-          throw new Error(data.message || "Failed to get client count");
-        }
+  //       if (!res.ok) {
+  //         throw new Error(data.message || "Failed to get client count");
+  //       }
 
-        setCount(data.total);
-      } catch (err) {
-        console.error(err);
-      }
-    };
+  //       setCount(data.total);
+  //     } catch (err) {
+  //       console.error(err);
+  //     }
+  //   };
 
-    getCount();
-  }, [filters]);
+  //   getCount();
+  // }, [filters]);
 
   return (
     <div>
@@ -43,7 +43,7 @@ function ClientCount({ filters }) {
             <FaRegUser className="size-8" />
           </div>
           <div className="flex flex-col items-end gap-2">
-            <p className="font-bold text-3xl">{count}</p>
+            <p className="font-bold text-3xl">{clientCount.total}</p>
             <p>Number of Applicants</p>
           </div>
         </CardContent>
