@@ -6,19 +6,24 @@ use Illuminate\Http\Request;
 
 class PredictController extends Controller
 {
-    public function predict(Request $request) {
+    public function predict(Request $request)
+    {
         $input = [
-            "Gender" => intval($request->gender),
-            "Married" => intval($request->married),
-            "Dependents" => intval($request->dependents),
-            "Education" => intval($request->education),
-            "Self_Employed" => intval($request->self_employed),
+            "Gender" => $request->gender === "Male" ? 1 : 0,
+            "Married" => $request->married === "Yes" ? 1 : 0,
+            "Dependents" => min(max(intval($request->dependents), 0), 3),
+            "Education" => $request->education === "Graduate" ? 1 : 0,
+            "Self_Employed" => $request->self_employed === "Yes" ? 1 : 0,
             "ApplicantIncome" => floatval($request->applicant_income),
             "CoapplicantIncome" => floatval($request->coapplicant_income),
             "LoanAmount" => floatval($request->loan_amount),
             "Loan_Amount_Term" => floatval($request->loan_amount_term),
-            "Credit_History" => intval($request->credit_history),
-            "Property_Area" => intval($request->property_area),
+            "Credit_History" => $request->credit_history === "Yes" ? 1 : 0,
+            "Property_Area" => match ($request->property_area) {
+                "Rural" => 0,
+                "Urban" => 1,
+                "Semi-Urban" => 2
+            },
         ];
 
         $jsonInput = json_encode($input);
@@ -35,7 +40,7 @@ class PredictController extends Controller
         );
 
         fwrite($pipes[0], $jsonInput);
-        fclose($pipes[1]);
+        fclose($pipes[0]);
 
         $result = stream_get_contents($pipes[1]);
         fclose($pipes[1]);
@@ -50,5 +55,8 @@ class PredictController extends Controller
         }
 
         return response()->json(json_decode($result, true));
+        // return response()->json([
+        //     "prediction" => $result["Prediction"]
+        // ]);
     }
 }

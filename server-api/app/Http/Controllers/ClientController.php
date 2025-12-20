@@ -7,13 +7,36 @@ use Illuminate\Http\Request;
 
 class ClientController extends Controller
 {
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         $user = $request->user();
 
         return Client::where('user_id', $user->id)->get();
     }
 
-    public function store(Request $request) {
+    public function count(Request $request)
+    {
+        $user = $request->user();
+
+        $query = Client::where('user_id', $user->id);
+
+        if ($request->filled('gender') && $request->gender !== 'all') {
+            $query->where('gender', $request->gender);
+        }
+
+        if ($request->filled('married') && $request->married !== 'all') {
+            $query->whereHas('loans', function ($q) use ($request) {
+                $q->where('married', $request->married);
+            });
+        }
+
+        return response()->json([
+            'total' => $query->count(),
+        ]);
+    }
+
+    public function store(Request $request)
+    {
         $validated = $request->validate([
             'firstname' => 'required|string|max:255',
             'lastname' => 'required|string|max:255',
