@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Client;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class ClientController extends Controller
@@ -54,5 +55,26 @@ class ClientController extends Controller
             'message' => 'Created successfully',
             'client' => $client
         ], 201);
+    }
+
+    public function clientsWithAndWithoutLoans(Request $request)
+    {
+        $user = $request->user();
+
+        $query = Client::where('user_id', $user->id);
+
+        if ($request->filled('gender') && $request->gender !== 'all') {
+            $query->where('gender', $request->gender);
+        }
+
+        if ($request->filled('married') && $request->married !== 'all') {
+            $query->whereHas('loans', function ($q) use ($request) {
+                $q->where('married', $request->married);
+            });
+        }
+
+        $data = $query->withCount('loans')->get(['id', 'firstname', 'lastname']);
+
+        return response()->json($data);
     }
 }

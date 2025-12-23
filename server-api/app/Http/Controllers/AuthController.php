@@ -8,10 +8,11 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    public function login(Request $request) {
+    public function login(Request $request)
+    {
         $validated = $request->validate([
-            'email'=>'required|string|email',
-            'password'=>'required|min:8'
+            'email' => 'required|string|email',
+            'password' => 'required|min:8'
         ]);
 
         $user = User::where('email', $validated['email'])->first();
@@ -25,15 +26,16 @@ class AuthController extends Controller
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
-            'message'=>'Login successfully',
-            'token'=>$token,
-            'token_type'=>'Bearer',
-            'user'=>$user
+            'message' => 'Login successfully',
+            'token' => $token,
+            'token_type' => 'Bearer',
+            'user' => $user
         ]);
     }
 
-    public function logout(Request $request) {
+    public function logout(Request $request)
+    {
         $request->user()->currentAccessToken()->delete();
-        return response()->json(['message'=>'Logged out']);
+        return response()->json(['message' => 'Logged out']);
     }
 }

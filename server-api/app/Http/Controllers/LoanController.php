@@ -39,7 +39,8 @@ class LoanController extends Controller
         ], 201);
     }
 
-    public function totalAmountReq(Request $request) {
+    public function totalAmountReq(Request $request)
+    {
         $query = Loan::query();
 
         if ($request->filled('married') && $request->married !== 'all') {
@@ -57,7 +58,8 @@ class LoanController extends Controller
         ]);
     }
 
-    public function totalLoanStatus(Request $request) {
+    public function totalLoanStatus(Request $request)
+    {
         $user = $request->user();
 
         $query = Loan::whereHas('client', function ($q) use ($user) {
