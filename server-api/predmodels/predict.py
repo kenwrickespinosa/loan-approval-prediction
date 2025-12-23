@@ -25,8 +25,19 @@ features = np.array([[
     data["Property_Area"]
 ]])
 
-# Predict
-pred = model.predict(features)[0]
+# # Predict
+# pred = model.predict(features)[0]
 
-# Return back to Laravel
-print(json.dumps({"Prediction": int(pred)}))
+# # Return back to Laravel
+# print(json.dumps({"Prediction": int(pred)}))
+
+# Get prediction + probability
+prediction = int(model.predict(features)[0])
+prob = float(model.predict_proba(features)[0][1])  # probability of approval
+
+result = {
+    "prediction": prediction,
+    "approval_chance": round(prob * 100, 2)  # return percentage
+}
+
+print(json.dumps(result))
