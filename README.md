@@ -9,6 +9,15 @@ The project combines **machine learning model trained in Python** with a **React
 
 The Python model is integrated into the backend and frontend to provide prediction output. User can input loan application details through the React interface, which communicates with the Laravel API to retrieve predictions from the trained model.
 
+## 🧠 Model Performance
+
+| Model             | Accuracy | F1-Score |
+|-------------------|----------|----------|
+| Decision Tree     | 0.77     | 0.84     |
+| Random Forest     | 0.82     | 0.89     |
+| XGBoost           | 0.83     | 0.89     |
+
+
 ## 🚀 Features
 
 - Instant loan approval predictions using a trained ML model
