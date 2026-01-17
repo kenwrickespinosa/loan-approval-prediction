@@ -19,9 +19,10 @@ function UserCard({ client }) {
       <CardContent className="flex flex-col gap-6 p-6">
         <div className="flex flex-col">
           <span className="text-neutral-400 text-xs">FULL NAME</span>
-          <span className="text-xl font-semibold">
-            {client.firstname} {client.lastname}
-          </span>
+          <div className="flex justify-between items-center">
+            <p className="text-xl font-semibold">{client.firstname} {client.lastname}</p>
+            <p>ID: {client.id}</p>
+          </div>
         </div>
         <div className="grid grid-cols-2 gap-6">
           <div className="flex items-center gap-2">

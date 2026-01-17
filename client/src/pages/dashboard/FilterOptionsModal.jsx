@@ -27,10 +27,10 @@ function FilterOptionsModal({ filters, setFilters }) {
   };
 
   return (
-    <div className="md:w-[1250px] text-right pr-4">
+    <div className="text-right ml-6 md:ml-0 md:w-[1250px] pr-6">
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>
-          <Button className="cursor-pointer bg-white border-2 hover:bg-blue-200 hover:border-blue-200">
+          <Button className="cursor-pointer mt-4 bg-white border-2 hover:bg-blue-200 hover:border-blue-200">
             <IoFilterSharp className="text-black font-bold size-6" />
           </Button>
         </DialogTrigger>

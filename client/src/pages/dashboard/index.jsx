@@ -5,14 +5,16 @@ import { useSearchParams } from "react-router-dom";
 import TotalAmountReq from "./TotalAmountReq";
 import TotalLoanStatus from "./TotalLoanStatus";
 import { Spinner } from "@/components/ui/spinner";
+import ClientsWithLoans from "./ClientsWithLoans";
 
 function index() {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   const [clientCount, setClientCount] = useState("");
   const [amountReq, setAmountReq] = useState("");
   const [totalLoanStatus, setTotalLoanStatus] = useState("");
+  const [clientsWithLoans, setClientsWithLoans] = useState([]);
 
   const [filters, setFilters] = useState({
     gender: searchParams.get("gender") || "all",
@@ -34,10 +36,10 @@ function index() {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
-        Authorization: `Bearer ${token}`
-      }
-    })
-  }
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  };
 
   useEffect(() => {
     const fetchSummaryData = async () => {
@@ -48,23 +50,32 @@ function index() {
       if (filters.married !== "all") params.append("married", filters.married);
 
       try {
-        const [countRes, amountRes, loanRes] = await Promise.all([
-          authFetch(`http://127.0.0.1:8000/api/clients/count?${params}`),
-          authFetch(
-            `http://127.0.0.1:8000/api/loan/total-amount-requested?${params}`
-          ),
-          authFetch(`http://127.0.0.1:8000/api/loan/total-loan-status?${params}`),
-        ]);
+        const [countRes, amountRes, loanRes, clientsWithLoansRes] =
+          await Promise.all([
+            authFetch(`http://127.0.0.1:8000/api/clients/count?${params}`),
+            authFetch(
+              `http://127.0.0.1:8000/api/loan/total-amount-requested?${params}`
+            ),
+            authFetch(
+              `http://127.0.0.1:8000/api/loan/total-loan-status?${params}`
+            ),
+            authFetch(
+              `http://127.0.0.1:8000/api/clients/clients-with-and-without-loans?${params}`
+            ),
+          ]);
 
-        const [countData, amountData, loanData] = await Promise.all([
-          countRes.json(),
-          amountRes.json(),
-          loanRes.json(),
-        ]);
+        const [countData, amountData, loanData, clientsLoansData] =
+          await Promise.all([
+            countRes.json(),
+            amountRes.json(),
+            loanRes.json(),
+            clientsWithLoansRes.json(),
+          ]);
 
         setClientCount(countData);
         setAmountReq(amountData);
         setTotalLoanStatus(loanData);
+        setClientsWithLoans(clientsLoansData);
       } catch (err) {
         console.error(err);
       } finally {
@@ -77,27 +88,32 @@ function index() {
 
   if (isLoading) {
     return (
-      <div className="flex flex-col justify-center items-center md:w-[1250px] md:h-screen">
+      <div className="flex flex-col justify-center items-center w-screen h-screen md:w-[1250px] md:h-screen">
         <Spinner className="h-8 w-8 text-neutral-600" />
         <p className="text-neutral-600">Please Wait</p>
       </div>
-    )
+    );
   }
 
   return (
-    <div>
-      <div className="md:pt-6">
+    <div className="flex flex-col">
+      <div>
         <FilterOptionsModal filters={filters} setFilters={setFilters} />
       </div>
-      <div className="w-screen flex flex-col items-center gap-6 md:w-auto md:flex-row md:p-4">
-        <div>
-          <ClientCount clientCount={clientCount} />
+
+      <div className="flex flex-col pt-4">
+        <div className="md:flex md:gap-16">
+          <div className="md:flex md:flex-col md:gap-4">
+            <ClientCount clientCount={clientCount} />
+            <TotalAmountReq amountReq={amountReq} />
+          </div>
+          <div>
+            <TotalLoanStatus totalLoanStatus={totalLoanStatus} />
+          </div>
         </div>
+
         <div>
-          <TotalAmountReq amountReq={amountReq} />
-        </div>
-        <div>
-          <TotalLoanStatus totalLoanStatus={totalLoanStatus} />
+          <ClientsWithLoans loans={clientsWithLoans} />
         </div>
       </div>
     </div>

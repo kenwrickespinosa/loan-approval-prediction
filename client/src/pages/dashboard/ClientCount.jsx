@@ -36,19 +36,17 @@ function ClientCount({ clientCount }) {
   // }, [filters]);
 
   return (
-    <div>
-      <Card className="border-l-8 border-l-blue-400 rounded-sm">
-        <CardContent className="pb-0 p-5 flex items-center gap-10 bg-neutral-50">
-          <div>
+    <Card className="border-l-8 mx-5 border-l-blue-400 rounded-sm md:mx-0">
+      <CardContent className="pb-0 py-5 bg-neutral-50 md:w-[300px]">
+        {/* <div>
             <FaRegUser className="size-8" />
-          </div>
-          <div className="flex flex-col items-end gap-2">
-            <p className="font-bold text-3xl">{clientCount.total}</p>
-            <p>Number of Applicants</p>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+          </div> */}
+        <div className="flex flex-col items-end gap-2">
+          <p className="font-bold text-3xl">{clientCount.total}</p>
+          <p>Number of Applicants</p>
+        </div>
+      </CardContent>
+    </Card>
   );
 }
 

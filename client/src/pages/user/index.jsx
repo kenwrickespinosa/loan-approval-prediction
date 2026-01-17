@@ -2,12 +2,17 @@ import React, { useEffect, useState } from "react";
 import CreateUserModal from "./CreateUserModal";
 import { Input } from "@/components/ui/input";
 import UsersList from "./UsersList";
+import { Spinner } from "@/components/ui/spinner";
 
 function index() {
   const [clients, setClients] = useState([]);
 
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
     const fetchClients = async () => {
+      setIsLoading(true);
+
       try {
         const token = localStorage.getItem("token");
 
@@ -29,11 +34,22 @@ function index() {
         setClients(data);
       } catch (error) {
         console.log(error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchClients();
   }, []);
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col justify-center items-center w-screen h-screen md:w-[1250px] md:h-screen">
+        <Spinner className="h-8 w-8 text-neutral-600" />
+        <p className="text-neutral-600">Please Wait</p>
+      </div>
+    );
+  }
 
   return (
     <div>
