@@ -33,6 +33,39 @@ class AuthController extends Controller
         ]);
     }
 
+    public function register(Request $request)
+    {
+        $validated = $request->validate([
+            'firstname' => 'required|string|max:255',
+            'lastname' => 'required|string|max:255',
+            'gender' => 'required|string|in:Male,Female,Other',
+            'birthdate' => 'required|date|before:today',
+            'address' => 'required|string|max:255',
+            'role' => 'required|string|in:staff',
+            'email' => 'required|string|email',
+            'password' => 'required|string|min:8'
+        ]);
+
+        $user = User::create([
+            'firstname' => $validated['firstname'],
+            'lastname' => $validated['lastname'],
+            'gender' => $validated['gender'],
+            'birthdate' => $validated['birthdate'],
+            'address' => $validated['address'],
+            'role' => $validated['role'] ?? 'staff',
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
+        ]);
+
+        $token = $user->createToken('token')->plainTextToken;
+
+        return response()->json([
+            'user' => $user,
+            'token' => $token,
+            'message' => 'User registered successfully',
+        ]);
+    }
+
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
